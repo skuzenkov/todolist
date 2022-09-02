@@ -1,0 +1,37 @@
+
+
+{% extends 'todoapp/todo.html' %}
+
+{% block content %}
+
+<div style="mb-auto" class="cover-container d-flex w-100 h-25 p-3 mx-auto flex-column">
+        <h1 class="float-md-start mb-0"> Менеджер задач </h1>
+        <h1 class="nav-link active">  </h1>
+        <form class="nav-link" action="{% url 'add' %}" method="post">
+            {% csrf_token %}
+            <div class="field">
+                <h1 class="nav-link active">Добавить задачу</h1>
+                <input type="text" name="title" class="cover-container d-flex w-25 h-50 p-1 mx-auto flex-column" placeholder=""><br>
+            </div>
+            <button class="btn btn-outline-light" type="submit">Добавить</button>
+            <h1 class="cover-container d-flex w-50 h-50 p-1 mx-auto flex-column"></h1>
+        </form>
+
+
+{% for todo in todo_list %}
+<div class="cover-container d-flex w-50 h-50 p-1 mx-auto flex-column">
+   <p class="lead">{{todo.id}}: {{ todo.title}}</p>
+
+   {% if todo.is_complete == False %}
+   <p class="text-danger">Отложено</p>
+   <a class="nav-link active" aria-current="page" href="{% url 'update' todo_id=todo.id %}">Взять в работу</a>
+   {% else %}
+   <p class="text-warning">В работе</p>
+   <a class="nav-link active" aria-current="page" href="{% url 'update' todo_id=todo.id %}">Отложить</a>
+   {% endif %}
+   <a class="text-danger" aria-current="page" href="{% url 'delete' todo_id=todo.id %}">Выполнено</a>
+</div>
+
+{% endfor %}
+
+{% endblock content %}
